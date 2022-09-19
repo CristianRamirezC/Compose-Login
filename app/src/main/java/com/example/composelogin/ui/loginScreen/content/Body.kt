@@ -1,11 +1,9 @@
 package com.example.composelogin.ui.loginScreen.content
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.mutableStateOf
@@ -27,14 +25,86 @@ fun Body(modifier: Modifier = Modifier) {
     var password by rememberSaveable {
         mutableStateOf("")
     }
+    var isLoginEnable by rememberSaveable {
+        mutableStateOf(false)
+    }
     Column(modifier = modifier) {
-        ImageLogo()
-        Spacer(modifier = Modifier.size(16.dp))
+        ImageLogo(Modifier.align(Alignment.CenterHorizontally))
+        Spacer(modifier = Modifier.size(40.dp))
         EmailField(email) { email = it }
-        Spacer(modifier = Modifier.size(4.dp))
-        Password(password) { password = it }
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(12.dp))
+        PasswordField(password) { password = it }
+        Spacer(modifier = Modifier.size(20.dp))
         ForgotPassword(Modifier.align(Alignment.End))
+        Spacer(modifier = Modifier.size(25.dp))
+        LoginButton(isLoginEnable)
+        Spacer(modifier = Modifier.size(16.dp))
+        LoginDivider()
+        Spacer(modifier = Modifier.size(32.dp))
+        SocialLogin()
+    }
+}
+
+@Composable
+fun SocialLogin() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.fb),
+            contentDescription = "Facebook logo",
+            modifier = Modifier.size(20.dp)
+        )
+        Text(
+            text = "Continue as Dave Johnson",
+            fontSize = 15.sp,
+            color = Color(0xFF0095F6),
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+    }
+}
+
+@Composable
+fun LoginDivider() {
+    Row(
+        Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        Divider(
+            Modifier
+                .background(Color(0xFFECECEC))
+                .height(0.4.dp)
+                .weight(1f)
+        )
+        Text(
+            text = "OR",
+            modifier = Modifier.padding(horizontal = 25.dp),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFFA4A4A4)
+        )
+        Divider(
+            Modifier
+                .background(Color(0xFFECECEC))
+                .height(0.4.dp)
+                .weight(1f)
+        )
+    }
+}
+
+@Composable
+fun LoginButton(isLoginEnable: Boolean) {
+    Button(
+        onClick = { },
+        enabled = isLoginEnable,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(text = "Log In")
     }
 }
 
@@ -42,25 +112,37 @@ fun Body(modifier: Modifier = Modifier) {
 fun ForgotPassword(modifier: Modifier = Modifier) {
     Text(
         text = "Forgot Password?",
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
         color = Color(0xFF0095F6),
         modifier = modifier
     )
 }
 
 @Composable
-fun Password(password: String, onTextChanged: (String) -> Unit) {
-    TextField(value = password, onValueChange = { onTextChanged(it) })
+fun PasswordField(password: String, onTextChanged: (String) -> Unit) {
+    TextField(
+        value = password,
+        onValueChange = { onTextChanged(it) },
+        modifier = Modifier.fillMaxWidth()
+    )
 }
-
 
 @Composable
 fun EmailField(email: String, onTextChanged: (String) -> Unit) {
-    TextField(value = email, onValueChange = { onTextChanged(it) })
+    TextField(
+        value = email,
+        onValueChange = { onTextChanged(it) },
+        modifier = Modifier.fillMaxWidth(
+        )
+    )
 }
 
 @Composable
-fun ImageLogo() {
-    Image(painter = painterResource(id = R.drawable.insta), contentDescription = "Application logo")
+fun ImageLogo(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.insta),
+        contentDescription = "Application logo",
+        modifier = modifier
+    )
 }

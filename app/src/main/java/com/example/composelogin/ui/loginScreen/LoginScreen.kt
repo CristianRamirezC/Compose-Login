@@ -21,6 +21,6 @@ fun LoginScreen() {
     ) {
         Header(modifier = Modifier.align(Alignment.TopEnd))
         Body(modifier = Modifier.align(Alignment.Center))
-        Footer()
+        Footer(modifier = Modifier.align(Alignment.BottomCenter))
     }
 }

@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                LoginScreen()
+                LoginScreen(loginViewModel = LoginViewModel())
             }
         }
     }
@@ -30,5 +30,4 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun MyLogin() {
-    LoginScreen()
 }

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -28,26 +29,18 @@ import com.example.composelogin.R
 
 @Composable
 fun Body(modifier: Modifier = Modifier, loginViewModel: LoginViewModel) {
-    var email by rememberSaveable {
-        mutableStateOf("")
-    }
-    var password by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isLoginEnable by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val email: String by loginViewModel.email.observeAsState(initial = "")
+    val password: String by loginViewModel.password.observeAsState(initial = "")
+    val isLoginEnable by loginViewModel.isLoginEnable.observeAsState(initial = false)
     Column(modifier = modifier) {
         ImageLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(40.dp))
         EmailField(email) {
-            email = it
-            isLoginEnable = enableLogin(email, password)
+            loginViewModel.onLoginChanged(email = it, password = password)
         }
         Spacer(modifier = Modifier.size(12.dp))
         PasswordField(password) {
-            password = it
-            isLoginEnable = enableLogin(email, password)
+            loginViewModel.onLoginChanged(email = email, password = it)
         }
         Spacer(modifier = Modifier.size(20.dp))
         ForgotPassword(Modifier.align(Alignment.End))
@@ -130,10 +123,6 @@ fun LoginButton(isLoginEnable: Boolean) {
         Text(text = "Log In")
     }
 }
-
-fun enableLogin(email: String, password: String) =
-    Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-            password.length > 5
 
 @Composable
 fun ForgotPassword(modifier: Modifier = Modifier) {

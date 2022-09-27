@@ -29,9 +29,19 @@ import com.example.composelogin.R
 
 @Composable
 fun Body(modifier: Modifier = Modifier, loginViewModel: LoginViewModel) {
-    val email: String by loginViewModel.email.observeAsState(initial = "")
-    val password: String by loginViewModel.password.observeAsState(initial = "")
-    val isLoginEnable by loginViewModel.isLoginEnable.observeAsState(initial = false)
+    val email by loginViewModel
+        .email
+        .observeAsState(initial = "")
+    val password by loginViewModel
+        .password
+        .observeAsState(initial = "")
+    val isLoginEnable by loginViewModel
+        .isLoginEnable
+        .observeAsState(initial = false)
+    val isPasswordIconVisible by loginViewModel
+        .isPasswordIconVisible
+        .observeAsState(initial = false)
+
     Column(modifier = modifier) {
         ImageLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(40.dp))
@@ -39,7 +49,13 @@ fun Body(modifier: Modifier = Modifier, loginViewModel: LoginViewModel) {
             loginViewModel.onLoginChanged(email = it, password = password)
         }
         Spacer(modifier = Modifier.size(12.dp))
-        PasswordField(password) {
+        PasswordField(
+            password = password,
+            isPasswordIconVisible = isPasswordIconVisible,
+            onPasswordVisibilityIconPressed = {
+                loginViewModel.onPasswordVisibilityIconPressed(it)
+            }
+        ) {
             loginViewModel.onLoginChanged(email = email, password = it)
         }
         Spacer(modifier = Modifier.size(20.dp))
@@ -136,10 +152,12 @@ fun ForgotPassword(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PasswordField(password: String, onTextChanged: (String) -> Unit) {
-    var passwordVisibility by rememberSaveable {
-        mutableStateOf(false)
-    }
+fun PasswordField(
+    password: String,
+    isPasswordIconVisible: Boolean,
+    onPasswordVisibilityIconPressed: (Boolean) -> Unit,
+    onTextChanged: (String) -> Unit
+) {
     TextField(
         value = password,
         onValueChange = { onTextChanged(it) },
@@ -157,16 +175,21 @@ fun PasswordField(password: String, onTextChanged: (String) -> Unit) {
             unfocusedIndicatorColor = Color.Transparent
         ),
         trailingIcon = {
-            val passwordVisibilityIcon = if (passwordVisibility) {
+            val passwordVisibilityIcon = if (isPasswordIconVisible) {
                 Icons.Outlined.VisibilityOff
             } else {
                 Icons.Outlined.Visibility
             }
-            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
-                Icon(imageVector = passwordVisibilityIcon, contentDescription = "Show password")
+            IconButton(onClick = {
+                onPasswordVisibilityIconPressed(isPasswordIconVisible)
+            }) {
+                Icon(
+                    imageVector = passwordVisibilityIcon,
+                    contentDescription = "Show password"
+                )
             }
         },
-        visualTransformation = if (passwordVisibility) {
+        visualTransformation = if (isPasswordIconVisible) {
             VisualTransformation.None
         } else {
             PasswordVisualTransformation()

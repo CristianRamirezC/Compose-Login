@@ -1,6 +1,8 @@
 package com.example.composelogin.ui.loginScreen.footer
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -8,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +31,7 @@ fun Footer(modifier: Modifier = Modifier) {
 
 @Composable
 fun SignUp() {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -44,7 +48,12 @@ fun SignUp() {
             text = "Sign Up.",
             fontWeight = FontWeight.Medium,
             color = Color(0xFF0095F6),
-            fontSize = 13.sp
+            fontSize = 13.sp,
+            modifier = Modifier.clickable {
+                Toast
+                    .makeText(context, "Sign Up", Toast.LENGTH_SHORT)
+                    .show()
+            }
         )
     }
 }

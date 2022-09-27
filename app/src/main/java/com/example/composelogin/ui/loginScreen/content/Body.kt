@@ -4,6 +4,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -73,6 +74,7 @@ fun Body(modifier: Modifier = Modifier, loginViewModel: LoginViewModel) {
 
 @Composable
 fun SocialLogin() {
+    val context = LocalContext.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -88,7 +90,13 @@ fun SocialLogin() {
             fontSize = 15.sp,
             color = Color(0xFF0095F6),
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .clickable {
+                    Toast
+                        .makeText(context, "Login with facebook", Toast.LENGTH_SHORT)
+                        .show()
+                }
         )
     }
 }
@@ -147,12 +155,18 @@ fun LoginButton(isLoginEnable: Boolean) {
 
 @Composable
 fun ForgotPassword(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     Text(
         text = "Forgot Password?",
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium,
         color = Color(0xFF0095F6),
         modifier = modifier
+            .clickable {
+                Toast
+                    .makeText(context, "Forgot Password", Toast.LENGTH_SHORT)
+                    .show()
+            },
     )
 }
 

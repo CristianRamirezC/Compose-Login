@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.composelogin.LoginViewModel
 import com.example.composelogin.ui.loginScreen.content.Body
 import com.example.composelogin.ui.loginScreen.footer.Footer
 import com.example.composelogin.ui.loginScreen.header.Header

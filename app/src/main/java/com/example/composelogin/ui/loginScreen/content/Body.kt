@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composelogin.ui.loginScreen.LoginViewModel
+import com.example.composelogin.ui.loginScreen.viewModel.LoginViewModel
 import com.example.composelogin.R
 
 @Composable
@@ -61,7 +61,10 @@ fun Body(modifier: Modifier = Modifier, loginViewModel: LoginViewModel) {
         Spacer(modifier = Modifier.size(20.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(25.dp))
-        LoginButton(isLoginEnable)
+        LoginButton(
+            isLoginEnable = isLoginEnable,
+            loginViewModel = loginViewModel
+        )
         Spacer(modifier = Modifier.size(20.dp))
         LoginDivider()
         Spacer(modifier = Modifier.size(32.dp))
@@ -129,11 +132,13 @@ fun LoginDivider() {
 }
 
 @Composable
-fun LoginButton(isLoginEnable: Boolean) {
-    val context = LocalContext.current
+fun LoginButton(
+    isLoginEnable: Boolean,
+    loginViewModel: LoginViewModel
+) {
     Button(
         onClick = {
-            Toast.makeText(context, "Login!", Toast.LENGTH_SHORT).show()
+            loginViewModel.onLoginSelected()
         },
         enabled = isLoginEnable,
         modifier = Modifier

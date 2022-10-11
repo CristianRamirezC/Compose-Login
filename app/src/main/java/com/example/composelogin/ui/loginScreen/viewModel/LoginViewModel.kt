@@ -1,11 +1,22 @@
-package com.example.composelogin.ui.loginScreen
+package com.example.composelogin.ui.loginScreen.viewModel
 
+import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.composelogin.domain.login.LoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    val loginUseCase: LoginUseCase
+) : ViewModel() {
+
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
 
@@ -17,6 +28,9 @@ class LoginViewModel : ViewModel() {
 
     private val _isPasswordIconVisible = MutableLiveData<Boolean>()
     val isPasswordIconVisible: LiveData<Boolean> = _isPasswordIconVisible
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
@@ -31,5 +45,16 @@ class LoginViewModel : ViewModel() {
 
     fun onPasswordVisibilityIconPressed(isPasswordIconVisible: Boolean) {
         _isPasswordIconVisible.value = isPasswordIconVisible.not()
+    }
+
+    fun onLoginSelected() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val loginResult = loginUseCase(user = email.value!!, password = password.value!!)
+            if (loginResult) {
+                Log.i("instagramLogin", "Login successful!")
+            }
+            _isLoading.value = false
+        }
     }
 }

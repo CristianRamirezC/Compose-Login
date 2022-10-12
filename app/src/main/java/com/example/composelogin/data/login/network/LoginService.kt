@@ -4,8 +4,9 @@ import com.example.composelogin.core.network.RetrofitHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.create
+import javax.inject.Inject
 
-class LoginService {
+class LoginService @Inject constructor() {
     private val retrofit = RetrofitHelper.getRetrofit()
 
     suspend fun doLogin(user: String, password: String): Boolean {
